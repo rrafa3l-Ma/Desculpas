@@ -1,122 +1,161 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gigiovana</title>
-<style>
-body { margin:0; padding:0; background:black; color:white; font-family:Arial,sans-serif; text-align:center; overflow:hidden; transition:background 1s;}
-#inicio{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);}
-button{padding:15px 30px; font-size:18px; border:none; border-radius:10px; cursor:pointer; margin:10px;}
-#conteudo{display:none; padding-top:40px;}
-img{width:300px; height:300px; object-fit:cover; border-radius:15px;}
-#texto{font-size:28px; margin-top:20px;}
-#botoes{margin-top:15px;}
-</style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Desculpas</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: black;
+        color: white;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        overflow: hidden;
+        transition: background 1s;
+      }
+      #inicio {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      button {
+        padding: 15px 30px;
+        font-size: 18px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        margin: 10px;
+      }
+      #conteudo {
+        display: none;
+        padding-top: 40px;
+      }
+      img {
+        width: 300px;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 15px;
+      }
+      #texto {
+        font-size: 28px;
+        margin-top: 20px;
+      }
+      #botoes {
+        margin-top: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="inicio">
+      <button onclick="iniciar()">Aperte aqui</button>
+    </div>
 
-<div id="inicio">
-    <button onclick="iniciar()">Aperte aqui</button>
-</div>
-
-<div id="conteudo">
-    <img id="slide" src="">
-    <div id="texto">Me perdoa?</div>
-    <div id="botoes">
+    <div id="conteudo">
+      <img id="slide" src="" />
+      <div id="texto">Me perdoa?</div>
+      <div id="botoes">
         <button onclick="clicouSim()">Sim</button>
         <button onclick="clicouNao()">Não</button>
+      </div>
     </div>
-</div>
 
-<!-- Áudio local -->
-<audio id="musicaSim" preload="auto">
-  <source src="kempa.mp3" type="audio/mpeg">
-  <source src="kempa.ogg" type="audio/ogg">
-</audio>
-<audio id="musicaNao" preload="auto" loop>
-  <source src="musicaNao.mp3" type="audio/mpeg">
-  <source src="musicaNao.ogg" type="audio/ogg">
-</audio>
+    <iframe
+      id="musicaSim"
+      width="0"
+      height="0"
+      src=""
+      allow="autoplay"
+    ></iframe>
+    <iframe
+      id="musicaNao"
+      width="0"
+      height="0"
+      src=""
+      allow="autoplay"
+    ></iframe>
 
-<script>
-// Fotos (coloque os nomes corretos das suas imagens)
-let imagens = ["ft1.png","ft2.png","ft3.png"];
-let indice=0;
-let etapa=0;
-let slideInterval;
+    <script>
+      let imagens = ["ft1.png", "ft2.png", "ft3.png"];
+      let indice = 0;
+      let etapa = 0;
+      let slideInterval;
+      let musica2Tocando = false;
 
-function iniciar(){
-    document.body.style.background="#1e1e1e";
-    document.getElementById("inicio").style.display="none";
-    document.getElementById("conteudo").style.display="block";
-    iniciarSlide();
+      function iniciar() {
+        document.body.style.background = "#1e1e1e";
+        document.getElementById("inicio").style.display = "none";
+        document.getElementById("conteudo").style.display = "block";
+        iniciarSlide();
+      }
 
-    // Interação inicial do usuário liberando som
-    let mSim = document.getElementById("musicaSim");
-    let mNao = document.getElementById("musicaNao");
-    mSim.pause(); mSim.currentTime=0;
-    mNao.pause(); mNao.currentTime=0;
-}
+      function iniciarSlide() {
+        document.getElementById("slide").src = imagens[indice];
+        slideInterval = setInterval(() => {
+          indice = (indice + 1) % imagens.length;
+          document.getElementById("slide").src = imagens[indice];
+        }, 3000);
+      }
 
-function iniciarSlide(){
-    document.getElementById("slide").src=imagens[indice];
-    slideInterval=setInterval(()=>{
-        indice=(indice+1)%imagens.length;
-        document.getElementById("slide").src=imagens[indice];
-    },3000); // troca de foto a cada 3 segundos
-}
+      function tocarMusicaSim() {
+        document.getElementById("musicaNao").src = "";
+        document.getElementById("musicaSim").src =
+          "https://www.youtube.com/watch?v=8qkxyLs-UP4&list=RD8qkxyLs-UP4&start_radio=1";
+      }
 
-function tocarMusicaSim(){
-    let mSim = document.getElementById("musicaSim");
-    let mNao = document.getElementById("musicaNao");
-    mNao.pause(); mNao.currentTime=0;
-    mSim.volume=0.3;
-    mSim.currentTime=0;
-    mSim.play();
-}
+      function tocarMusicaNao() {
+        if (!musica2Tocando) {
+          document.getElementById("musicaSim").src = "";
+          document.getElementById("musicaNao").src =
+            "https://www.youtube.com/embed/b3rNUhDqciM?autoplay=1&loop=1&playlist=b3rNUhDqciM";
+          musica2Tocando = true;
+        }
+      }
 
-function tocarMusicaNao(){
-    let mSim = document.getElementById("musicaSim");
-    let mNao = document.getElementById("musicaNao");
-    mSim.pause(); mSim.currentTime=0;
-    mNao.volume=0.2;
-    mNao.play();
-}
+      function clicouSim() {
+        if (etapa === 0) {
+          tocarMusicaSim();
+          document.getElementById("texto").innerText = "Aproveita seu site <3";
+          document.getElementById("botoes").style.display = "none";
+          return;
+        }
+        if (etapa === 1)
+          document.getElementById("texto").innerText =
+            "Mesmo sabendo que estou arrependido?";
+        else if (etapa === 2)
+          document.getElementById("texto").innerText =
+            "Mesmo sabendo que fiquei madrugando pra fazer esse site?";
+        else if (etapa === 3)
+          document.getElementById("texto").innerText =
+            "Ok, então não vai me perdoar?";
+        else if (etapa === 4)
+          document.getElementById("texto").innerText = "Tem certeza?";
+        else if (etapa === 5)
+          document.getElementById("texto").innerText = "Certeza Absoluta?";
+        else if (etapa === 6)
+          document.getElementById("texto").innerText = "100% de certeza?";
+        else if (etapa === 7) {
+          document.getElementById("texto").innerText =
+            "eu tentei pelo menos, me desculpa";
+          setTimeout(() => {
+            location.reload();
+          }, 4000);
+        }
+        etapa++;
+      }
 
-// Botões
-function clicouSim(){
-    if(etapa===0){
-        tocarMusicaSim();
-        document.getElementById("texto").innerText="Aproveita seu site <3";
-        document.getElementById("botoes").style.display="none";
-        return;
-    }
-
-    if(etapa===1) document.getElementById("texto").innerText="Mesmo sabendo que estou arrependido?";
-    else if(etapa===2) document.getElementById("texto").innerText="Mesmo sabendo que fiquei madrugando pra fazer esse site?";
-    else if(etapa===3) document.getElementById("texto").innerText="Ok, então não vai me perdoar?";
-    else if(etapa===4) document.getElementById("texto").innerText="Tem certeza?";
-    else if(etapa===5) document.getElementById("texto").innerText="Certeza Absoluta?";
-    else if(etapa===6) document.getElementById("texto").innerText="100% de certeza?";
-    else if(etapa===7){
-        document.getElementById("texto").innerText="eu tentei pelo menos, me desculpa";
-        setTimeout(()=>{location.reload();},4000);
-    }
-    etapa++;
-}
-
-function clicouNao(){
-    tocarMusicaNao();
-    if(etapa===0){
-        document.getElementById("texto").innerText="Tem certeza?";
-        etapa=1;
-        return;
-    }
-    document.getElementById("texto").innerText="Me perdoa?";
-    etapa=0;
-}
-</script>
-
-</body>
+      function clicouNao() {
+        tocarMusicaNao();
+        if (etapa === 0) {
+          document.getElementById("texto").innerText = "Tem certeza?";
+          etapa = 1;
+          return;
+        }
+        document.getElementById("texto").innerText = "Me perdoa?";
+        etapa = 0;
+      }
+    </script>
+  </body>
 </html>
