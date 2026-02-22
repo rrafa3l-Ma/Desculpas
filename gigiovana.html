@@ -30,8 +30,14 @@ img{width:300px; height:300px; object-fit:cover; border-radius:15px;}
 </div>
 
 <!-- Áudio local -->
-<audio id="musicaSim" src="kempa.mp3" preload="auto"></audio>
-<audio id="musicaNao" src="musicaNao.mp3" preload="auto" loop></audio>
+<audio id="musicaSim" preload="auto">
+  <source src="kempa.mp3" type="audio/mpeg">
+  <source src="kempa.ogg" type="audio/ogg">
+</audio>
+<audio id="musicaNao" preload="auto" loop>
+  <source src="musicaNao.mp3" type="audio/mpeg">
+  <source src="musicaNao.ogg" type="audio/ogg">
+</audio>
 
 <script>
 // Fotos (coloque os nomes corretos das suas imagens)
@@ -45,6 +51,12 @@ function iniciar(){
     document.getElementById("inicio").style.display="none";
     document.getElementById("conteudo").style.display="block";
     iniciarSlide();
+
+    // Interação inicial do usuário liberando som
+    let mSim = document.getElementById("musicaSim");
+    let mNao = document.getElementById("musicaNao");
+    mSim.pause(); mSim.currentTime=0;
+    mNao.pause(); mNao.currentTime=0;
 }
 
 function iniciarSlide(){
@@ -52,15 +64,14 @@ function iniciarSlide(){
     slideInterval=setInterval(()=>{
         indice=(indice+1)%imagens.length;
         document.getElementById("slide").src=imagens[indice];
-    },3000); // muda a cada 3 segundos
+    },3000); // troca de foto a cada 3 segundos
 }
 
 function tocarMusicaSim(){
     let mSim = document.getElementById("musicaSim");
     let mNao = document.getElementById("musicaNao");
-    mNao.pause();
-    mNao.currentTime=0;
-    mSim.volume = 0.3; // abaixa volume se quiser
+    mNao.pause(); mNao.currentTime=0;
+    mSim.volume=0.3;
     mSim.currentTime=0;
     mSim.play();
 }
@@ -68,9 +79,8 @@ function tocarMusicaSim(){
 function tocarMusicaNao(){
     let mSim = document.getElementById("musicaSim");
     let mNao = document.getElementById("musicaNao");
-    mSim.pause();
-    mSim.currentTime=0;
-    mNao.volume = 0.2; // abaixa volume do loop
+    mSim.pause(); mSim.currentTime=0;
+    mNao.volume=0.2;
     mNao.play();
 }
 
